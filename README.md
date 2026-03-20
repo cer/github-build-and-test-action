@@ -61,6 +61,10 @@ steps:
 - `test-reports` — Gradle build reports and test results
 - `container-logs` — Kubernetes container logs
 
+## Example
+
+See [example-service-with-componentized-deployment-pipeline](https://github.com/cer/example-service-with-componentized-deployment-pipeline/) for a project that uses these actions.
+
 ## License
 
 Apache License 2.0 — see [LICENSE.md](LICENSE.md).

@@ -27,10 +27,10 @@ runs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
-      run: ./manage/push-images.sh ${VERSION?}
+      run: ${{ github.action_path }}/../scripts/push-images.sh ${VERSION?}
 
     - name: Publish Helm Charts
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
-      run: ./manage/publish-helm-chart.sh ${{ inputs.service-name }} ${VERSION?} ${VERSION?}
+      run: ${{ github.action_path }}/../scripts/publish-helm-chart.sh ${{ inputs.service-name }} ${VERSION?} ${VERSION?}

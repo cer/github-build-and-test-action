@@ -11,7 +11,7 @@ runs:
   steps:
     - name: Install K8s tools
       shell: bash
-      run: sudo ./.github/workflows/install-k8s-tools.sh
+      run: sudo ${{ github.action_path }}/../scripts/install-k8s-tools.sh
 
     - name: Validate K8S manifests
       shell: bash
@@ -23,7 +23,7 @@ runs:
         GITHUB_USER: ${{ github.actor }}
         GITHUB_TOKEN: ${{ inputs.github-token }}
         GITHUB_DOCKER_SERVER: ghcr.io/${{ github.repository_owner }}
-      run: ./manage/create-kind-cluster.sh
+      run: ${{ github.action_path }}/../scripts/create-kind-cluster.sh
 
     - name: Test Kind installation
       shell: bash
@@ -48,12 +48,12 @@ runs:
     - name: Save pod logs
       if: always()
       shell: bash
-      run: ./.github/workflows/dump-k8s.sh
+      run: ${{ github.action_path }}/../scripts/dump-k8s.sh
 
     - name: Get container logs
       if: always()
       shell: bash
-      run: ./.github/workflows/print-container-logs.sh
+      run: ${{ github.action_path }}/../scripts/print-container-logs.sh
 
     - name: Save test results
       if: always()
@@ -79,4 +79,4 @@ runs:
     - name: Delete Kind Cluster
       if: always()
       shell: bash
-      run: ./manage/delete-kind-cluster.sh
+      run: ${{ github.action_path }}/../scripts/delete-kind-cluster.sh

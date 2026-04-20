@@ -23,7 +23,7 @@ runs:
         GITHUB_USER: ${{ github.actor }}
         GITHUB_TOKEN: ${{ inputs.github-token }}
         GITHUB_DOCKER_SERVER: ghcr.io/${{ github.repository_owner }}
-      run: ${{ github.action_path }}/../scripts/create-kind-cluster.sh
+      run: ./manage/create-kind-cluster.sh
 
     - name: Test Kind installation
       shell: bash
@@ -79,4 +79,4 @@ runs:
     - name: Delete Kind Cluster
       if: always()
       shell: bash
-      run: ${{ github.action_path }}/../scripts/delete-kind-cluster.sh
+      run: ./manage/delete-kind-cluster.sh

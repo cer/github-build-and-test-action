@@ -1,0 +1,36 @@
+name: 'Kubernetes Publish'
+description: 'Push Docker images and publish Helm charts'
+
+inputs:
+  github-token:
+    description: 'GitHub token for Docker registry and Helm chart publishing'
+    required: true
+  service-name:
+    description: 'Name of the service to publish'
+    required: true
+  version-prefix:
+    description: 'Version prefix (e.g. 0.1.0)'
+    required: false
+    default: '0.1.0'
+
+runs:
+  using: composite
+  steps:
+    - name: Set build env
+      shell: bash
+      run: |
+        BUILD_DATE=$(date -u +'%Y%m%d%H%M%S')
+        echo "BUILD_DATE=${BUILD_DATE}" >> "$GITHUB_ENV"
+        echo "VERSION=${{ inputs.version-prefix }}-BUILD.${BUILD_DATE}" >> "$GITHUB_ENV"
+
+    - name: Push images
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: ./manage/push-images.sh ${VERSION?}
+
+    - name: Publish Helm Charts
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: ./manage/publish-helm-chart.sh ${{ inputs.service-name }} ${VERSION?} ${VERSION?}

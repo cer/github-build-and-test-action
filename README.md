@@ -1,13 +1,14 @@
-# Build and Test GitHub Actions
+# Build, Test, and Publish GitHub Actions
 
-Reusable [composite GitHub Actions](https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-composite-action) for building and testing Java/Gradle microservice projects with Kubernetes integration testing.
+Reusable [composite GitHub Actions](https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-composite-action) for building, testing, and publishing Java/Gradle microservice projects with Kubernetes integration testing.
 
 ## Actions
 
-This repository provides two composite actions:
+This repository provides three composite actions:
 
 - **`build-and-test`** — Sets up JDK and Gradle, and builds the project
 - **`k8s-test`** — Deploys to a Kind cluster, runs integration tests, and collects diagnostics
+- **`k8s-publish`** — Pushes Docker images and publishes Helm charts
 
 ### `build-and-test`
 
@@ -60,6 +61,34 @@ steps:
 
 - `test-reports` — Gradle build reports and test results
 - `container-logs` — Kubernetes container logs
+
+### `k8s-publish`
+
+Pushes Docker images and publishes Helm charts with a timestamped version.
+
+**Inputs:**
+
+| Name             | Required | Default | Description                                      |
+|------------------|----------|---------|--------------------------------------------------|
+| `github-token`   | Yes      |         | GitHub token for Docker registry and Helm chart publishing |
+| `service-name`   | Yes      |         | Name of the service to publish                   |
+| `version-prefix` | No       | `0.1.0` | Version prefix (e.g. `0.1.0`)                   |
+
+**Usage:**
+
+```yaml
+steps:
+  - uses: your-org/github-build-and-test-action/k8s-publish@main
+    with:
+      github-token: ${{ secrets.GH_TOKEN }}
+      service-name: customer-service
+```
+
+**What it does:**
+
+1. Generates a timestamped version (`<version-prefix>-BUILD.<timestamp>`)
+2. Pushes Docker images via `./manage/push-images.sh`
+3. Publishes Helm charts via `./manage/publish-helm-chart.sh`
 
 ## Example
 

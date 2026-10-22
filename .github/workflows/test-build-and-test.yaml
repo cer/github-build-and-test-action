@@ -31,3 +31,17 @@ jobs:
 
       - name: Check that the reports were uploaded
         run: test "$(cat "$(find downloaded -name report.txt)")" = "report from fake gradlew"
+
+  build-commands-run-in-order:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./build-and-test
+        with:
+          build-commands: |
+            echo first >> commands.log
+            echo second >> commands.log
+
+      - name: Check that the commands ran in order
+        run: test "$(cat commands.log)" = "$(printf 'first\nsecond')"

@@ -1,6 +1,12 @@
 name: 'Build and Test'
 description: 'Set up JDK and Gradle, and build the Java project'
 
+inputs:
+  build-commands:
+    description: 'Commands that build and test the project, one per line. They run in order, and the first that fails stops the build.'
+    required: false
+    default: './gradlew build --build-cache'
+
 runs:
   using: composite
   steps:
@@ -17,7 +23,7 @@ runs:
 
     - name: Build
       shell: bash
-      run: ./gradlew build --build-cache
+      run: ${{ inputs.build-commands }}
 
     - name: Save test results
       if: always()

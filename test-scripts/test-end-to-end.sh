@@ -15,6 +15,7 @@ act workflow_dispatch \
   -P ubuntu-24.04=catthehacker/ubuntu:act-24.04 \
   --use-new-action-cache \
   --local-repository "gradle/actions@v4=$WORK_DIR/gradle-actions" \
-  --artifact-server-path "$WORK_DIR/artifacts"
+  --artifact-server-path "$WORK_DIR/artifacts" \
+  "$@"
 
 echo "=== All tests passed ==="

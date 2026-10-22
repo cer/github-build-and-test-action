@@ -94,6 +94,15 @@ steps:
 
 See [example-service-with-componentized-deployment-pipeline](https://github.com/cer/example-service-with-componentized-deployment-pipeline/) for a project that uses these actions.
 
+## Development
+
+This repository uses the hooks from [cer/pre-commit-hooks](https://github.com/cer/pre-commit-hooks).
+They need `pre-commit`, `gitleaks` and `shellcheck`. Install them once per clone:
+
+```
+pre-commit install
+```
+
 ## License
 
 Apache License 2.0 — see [LICENSE.md](LICENSE.md).

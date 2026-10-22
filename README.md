@@ -14,6 +14,12 @@ This repository provides three composite actions:
 
 Sets up JDK 17 (Temurin) and Gradle, then builds the project with build caching enabled.
 
+**Inputs:**
+
+| Name             | Required | Default                         | Description |
+|------------------|----------|---------------------------------|-------------|
+| `build-commands` | No       | `./gradlew build --build-cache` | Commands that build and test the project, one per line. They run in order, and the first that fails stops the build. |
+
 **Usage:**
 
 ```yaml
@@ -21,11 +27,26 @@ steps:
   - uses: your-org/github-build-and-test-action/build-and-test@main
 ```
 
+A project that must test its `buildSrc` before building:
+
+```yaml
+steps:
+  - uses: your-org/github-build-and-test-action/build-and-test@main
+    with:
+      build-commands: |
+        ./gradlew :buildSrc:check --build-cache
+        ./gradlew build --build-cache
+```
+
+A project that sets `build-commands` replaces the default, so it lists `./gradlew build --build-cache`
+itself.
+
 **What it does:**
 
 1. Sets up JDK 17 (Temurin distribution)
 2. Configures Gradle with read/write caching
-3. Runs `./gradlew build --build-cache`
+3. Runs `build-commands`
+4. Uploads `build/reports` and `build/test-results` as the `build-and-test-reports` artifact, even when the build fails
 
 ### `k8s-test`
 

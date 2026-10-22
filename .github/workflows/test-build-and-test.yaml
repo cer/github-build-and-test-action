@@ -45,3 +45,23 @@ jobs:
 
       - name: Check that the commands ran in order
         run: test "$(cat commands.log)" = "$(printf 'first\nsecond')"
+
+  failing-build-command-stops-the-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./build-and-test
+        id: build
+        continue-on-error: true
+        with:
+          build-commands: |
+            echo first >> commands.log
+            false
+            echo second >> commands.log
+
+      - name: Check that the action failed
+        run: test "${{ steps.build.outcome }}" = failure
+
+      - name: Check that the commands after the failing one did not run
+        run: test "$(cat commands.log)" = first

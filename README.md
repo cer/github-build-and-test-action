@@ -103,6 +103,19 @@ They need `pre-commit`, `gitleaks` and `shellcheck`. Install them once per clone
 pre-commit install
 ```
 
+### Testing
+
+[`.github/workflows/test-build-and-test.yaml`](.github/workflows/test-build-and-test.yaml) tests the
+`build-and-test` action. It runs on GitHub for pushes to `main` and for pull requests. Each job runs
+the action against [a fake Gradle project](test-scripts/fixtures/fake-gradle-project), whose
+`gradlew` records its arguments and writes a report, and then checks what the action did.
+
+To run the same workflow locally with [act](https://github.com/nektos/act), which needs Docker:
+
+```
+./test-scripts/test-end-to-end.sh
+```
+
 ## License
 
 Apache License 2.0 — see [LICENSE.md](LICENSE.md).

@@ -1,0 +1,6 @@
+#!/bin/bash -e
+# Stands in for the Gradle wrapper: it records its arguments and writes a report,
+# so a test can check what the action ran without running Gradle.
+echo "$*" >> gradlew-invocations.log
+mkdir -p build/reports/fake
+echo "report from fake gradlew" > build/reports/fake/report.txt
